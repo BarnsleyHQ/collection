@@ -108,4 +108,9 @@ class Collection {
     {
         return $this->entries;
     }
+
+    public function isEmpty()
+    {
+        return count($this->entries) === 0;
+    }
 }

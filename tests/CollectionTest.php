@@ -191,4 +191,10 @@ class CollectionTest extends TestCase
     {
         $this->assertTrue(is_array($this->collection->toArray()));
     }
+
+    public function testIsEmpty()
+    {
+        $this->assertFalse($this->collection->isEmpty());
+        $this->assertTrue(collect()->isEmpty());
+    }
 }
