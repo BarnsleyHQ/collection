@@ -1,6 +1,6 @@
 {
     "name": "alexbarnsley/collection",
-    "description": "A basically collection package",
+    "description": "A basic collection management package",
     "type": "library",
     "require": {
         "adbario/php-dot-notation": "^2.2"
@@ -17,7 +17,7 @@
     "authors": [
         {
             "name": "Alex Barnsley",
-            "email": "8069294+alexbarnsley@users.noreply.github.com"
+            "email": "alex@barnsley.io"
         }
     ],
     "require-dev": {
