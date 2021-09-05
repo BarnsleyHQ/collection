@@ -88,6 +88,22 @@ class CollectionTest extends TestCase
         $this->assertEquals(null, $this->collection->previous());
     }
 
+    public function testFind()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'bob', 'age' => 28],
+            ['name' => 'billie', 'age' => 30],
+            ['name' => 'fran', 'age' => 19],
+        ]);
+
+        $result = $this->collection
+            ->find(fn ($item) => $item['age'] === 30);
+
+        $this->assertEquals(['name' => 'alex', 'age' => 30], $result);
+    }
+
     public function testWhere()
     {
         $this->collection = new Collection([

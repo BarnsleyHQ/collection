@@ -63,6 +63,11 @@ class Collection {
         return $this->entries[--$this->cursor];
     }
 
+    public function find(Callable $callback)
+    {
+        return $this->whereCallable($callback)->first();
+    }
+
     public function where(string $key, $value)
     {
         $results = collect();
