@@ -57,10 +57,28 @@ class Collection {
     {
         if ($this->cursor <= 0) {
             $this->cursor = -1;
+
             return null;
         }
 
         return $this->entries[--$this->cursor];
+    }
+
+    public function keyBy(string $key)
+    {
+        $array = [];
+
+        foreach ($this->entries as $entry) {
+            if (!is_array($entry)) {
+                continue;
+            }
+
+            if (array_key_exists($key, $entry)) {
+                $array[$entry[$key]] = $entry;
+            }
+        }
+
+        return collect($array);
     }
 
     public function find(Callable $callback)

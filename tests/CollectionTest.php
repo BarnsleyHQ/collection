@@ -88,6 +88,23 @@ class CollectionTest extends TestCase
         $this->assertEquals(null, $this->collection->previous());
     }
 
+    public function testKeyBy()
+    {
+        $collection = new Collection([
+            ['name' => 'alex', 'age' => '30'],
+            ['name' => 'zoe', 'age' => '31'],
+            ['name' => 'bob', 'age' => '32'],
+        ]);
+
+        $keyed = $collection->keyBy('name');
+
+        $this->assertEquals([
+            'alex' => ['name' => 'alex', 'age' => '30'],
+            'zoe'  => ['name' => 'zoe', 'age' => '31'],
+            'bob'  => ['name' => 'bob', 'age' => '32'],
+        ], $keyed->toArray());
+    }
+
     public function testFind()
     {
         $this->collection = new Collection([
