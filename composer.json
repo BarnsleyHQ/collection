@@ -24,13 +24,9 @@
         "phpunit/phpunit": "^9.5"
     },
     "scripts": {
-        "test:coverage": [
-            "Composer\\Config::disableProcessTimeout",
-            "phpunit tests --coverage-text --coverage-html .coverage"
-        ],
         "test": [
             "Composer\\Config::disableProcessTimeout",
-            "phpunit tests"
+            "phpunit tests --coverage-text --coverage-html .coverage"
         ]
     }
 }
