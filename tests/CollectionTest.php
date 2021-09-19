@@ -108,6 +108,7 @@ class CollectionTest extends TestCase
             ['name' => 'alex', 'age' => '30'],
             ['name' => 'zoe', 'age' => '31'],
             ['name' => 'bob', 'age' => '32'],
+            'test',
         ]);
 
         $keyed = $collection->keyBy('name');
