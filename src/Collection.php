@@ -8,9 +8,13 @@ class Collection {
     private $entries;
     private $cursor = -1;
 
-    public function __construct(array $entries = [])
+    public function __construct($data = [])
     {
-        $this->entries = $entries;
+        if ($data instanceof Collection) {
+            $data = $data->toArray();
+        }
+
+        $this->entries = (array) $data;
     }
 
     public function count()

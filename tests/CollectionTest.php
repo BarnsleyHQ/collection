@@ -18,6 +18,20 @@ class CollectionTest extends TestCase
         ]);
     }
 
+    public function testHandlesNewInstance()
+    {
+        $collection = new Collection([1, 2, 3]);
+
+        $this->assertEquals([1, 2, 3], (new Collection($collection))->toArray());
+    }
+
+    public function testHandlesNewNonArrayInstance()
+    {
+        $collection = new Collection('test');
+
+        $this->assertEquals(['test'], $collection->toArray());
+    }
+
     public function testCount()
     {
         $this->assertEquals(5, $this->collection->count());
@@ -212,6 +226,6 @@ class CollectionTest extends TestCase
     public function testIsEmpty()
     {
         $this->assertFalse($this->collection->isEmpty());
-        $this->assertTrue(collect()->isEmpty());
+        $this->assertTrue((new Collection())->isEmpty());
     }
 }
