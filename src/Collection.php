@@ -90,6 +90,11 @@ class Collection {
         return $this->whereCallable($callback)->first();
     }
 
+    public function map(Callable $callback)
+    {
+        return collect(array_map($callback, $this->entries));
+    }
+
     public function where(string $key, $value)
     {
         $results = collect();

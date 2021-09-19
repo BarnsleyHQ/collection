@@ -136,6 +136,16 @@ class CollectionTest extends TestCase
         $this->assertEquals(['name' => 'alex', 'age' => 30], $result);
     }
 
+    public function testMap()
+    {
+        $this->collection = new Collection([1, 2, 3, 4]);
+        $mapped = $this->collection->map(function($entry) {
+            return $entry + 1;
+        });
+
+        $this->assertEquals([2, 3, 4, 5], $mapped->toArray());
+    }
+
     public function testWhere()
     {
         $this->collection = new Collection([
