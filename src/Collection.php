@@ -146,6 +146,13 @@ class Collection {
         return $results;
     }
 
+    public function sort(Callable $callback): self
+    {
+        usort($this->entries, $callback);
+
+        return $this;
+    }
+
     public function sortBy(string $key, string $direction): self
     {
         if (in_array($direction, ['asc', 'desc'], true) === false) {

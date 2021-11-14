@@ -345,6 +345,27 @@ class CollectionTest extends TestCase
         ], $whereItems->toArray());
     }
 
+    public function testSort()
+    {
+        $this->collection = new Collection([
+            'alex',
+            'zoe',
+            'bob',
+            'billie',
+            'fran',
+        ]);
+
+        $this->collection->sort('strcmp');
+
+        $this->assertEquals([
+            'alex',
+            'billie',
+            'bob',
+            'fran',
+            'zoe',
+        ], $this->collection->toArray());
+    }
+
     public function testSortBy()
     {
         $this->collection = new Collection([
