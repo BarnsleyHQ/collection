@@ -29,6 +29,13 @@ class Collection {
         return $this;
     }
 
+    public function set($key, $value)
+    {
+        $this->entries[$key] = $value;
+
+        return $this;
+    }
+
     public function get($key)
     {
         if ($this->has($key)) {
