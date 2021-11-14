@@ -3,6 +3,15 @@
 use AlexBarnsley\Collection;
 use PHPUnit\Framework\TestCase;
 
+class SampleEntity {
+    public bool $boolean = false;
+
+    public function isTrue(): bool
+    {
+        return $this->boolean === true;
+    }
+}
+
 class CollectionTest extends TestCase
 {
     private $collection;
@@ -179,6 +188,30 @@ class CollectionTest extends TestCase
         $this->assertEquals([
             ['name' => 'alex', 'age' => 30, 'address' => ['postcode' => 'AB1 23C']],
             ['name' => 'fran', 'age' => 19, 'address' => ['postcode' => 'AB1 23C']],
+        ], $whereItems->toArray());
+    }
+
+    public function testWhereObjectMethod()
+    {
+        $entityOne = new SampleEntity();
+        $entityTwo = new SampleEntity();
+        $entityTwo->boolean = true;
+
+        $this->collection = new Collection([
+            $entityOne,
+            $entityTwo,
+        ]);
+
+        $whereItems = $this->collection->where('isTrue', true);
+
+        $this->assertEquals([
+            $entityTwo,
+        ], $whereItems->toArray());
+
+        $whereItems = $this->collection->where('isTrue', false);
+
+        $this->assertEquals([
+            $entityOne,
         ], $whereItems->toArray());
     }
 
