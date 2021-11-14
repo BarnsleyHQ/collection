@@ -306,6 +306,72 @@ class CollectionTest extends TestCase
         ], $whereItems->toArray());
     }
 
+    public function testSortBy()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'bob', 'age' => 28],
+            ['name' => 'billie', 'age' => 30],
+            ['name' => 'fran', 'age' => 19],
+        ]);
+
+        $this->assertEquals([
+            ['name' => 'fran', 'age' => 19],
+            ['name' => 'bob', 'age' => 28],
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'billie', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+        ], $this->collection->sortBy('age', 'asc')->toArray());
+        $this->assertEquals([
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'billie', 'age' => 30],
+            ['name' => 'bob', 'age' => 28],
+            ['name' => 'fran', 'age' => 19],
+        ], $this->collection->sortBy('age', 'desc')->toArray());
+    }
+
+    public function testSortByDotNotation()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30, 'children' => ['count' => 6]],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'bob', 'age' => 28, 'children' => ['count' => 3]],
+            ['name' => 'billie', 'age' => 30, 'children' => ['count' => 1]],
+            ['name' => 'fran', 'age' => 19, 'children' => ['count' => 1]],
+            ['name' => 'charlie', 'age' => 19],
+        ]);
+
+        $this->assertEquals([
+            ['name' => 'billie', 'age' => 30, 'children' => ['count' => 1]],
+            ['name' => 'fran', 'age' => 19, 'children' => ['count' => 1]],
+            ['name' => 'bob', 'age' => 28, 'children' => ['count' => 3]],
+            ['name' => 'alex', 'age' => 30, 'children' => ['count' => 6]],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'charlie', 'age' => 19],
+        ], $this->collection->sortBy('children.count', 'asc')->toArray());
+        $this->assertEquals([
+            ['name' => 'alex', 'age' => 30, 'children' => ['count' => 6]],
+            ['name' => 'bob', 'age' => 28, 'children' => ['count' => 3]],
+            ['name' => 'billie', 'age' => 30, 'children' => ['count' => 1]],
+            ['name' => 'fran', 'age' => 19, 'children' => ['count' => 1]],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'charlie', 'age' => 19],
+        ], $this->collection->sortBy('children.count', 'desc')->toArray());
+    }
+
+    public function testSortByInvalidDirection()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+        ]);
+
+        $this->expectExceptionMessage('sortBy#direction must be "asc" or "desc"');
+        $this->collection->sortBy('age', 'up');
+    }
+
     public function testItemsPointer()
     {
         $this->assertEquals('test1', $this->collection->first());

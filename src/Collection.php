@@ -146,6 +146,39 @@ class Collection {
         return $results;
     }
 
+    public function sortBy(string $key, string $direction)
+    {
+        if (in_array($direction, ['asc', 'desc'], true) === false) {
+            throw new \Exception('sortBy#direction must be "asc" or "desc"');
+        }
+
+        usort($this->entries, function ($a, $b) use ($key, $direction) {
+            $aNotation = new DotNotation($a);
+            $bNotation = new DotNotation($b);
+
+            if (! $aNotation->has($key) && ! $bNotation->has($key)) {
+                return 0;
+            } else if (! $aNotation->has($key) || ! $bNotation->has($key)) {
+                return $aNotation->has($key) ? -1 : 1;
+            }
+
+            $aValue = $aNotation->get($key);
+            $bValue = $bNotation->get($key);
+            $sortMethod = 'strnatcasecmp';
+            if (is_int($aValue) && is_int($bValue)) {
+                $sortMethod = 'strcmp';
+            }
+
+            if ($direction === 'asc') {
+                return $sortMethod($aValue, $bValue);
+            }
+
+            return $sortMethod($bValue, $aValue);
+        });
+
+        return $this;
+    }
+
     public function &items()
     {
         return $this->entries;
