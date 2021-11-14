@@ -112,8 +112,7 @@ class Collection {
     {
         $results = collect();
         foreach ($this->entries as $entry) {
-            $entryArray = (array) $entry;
-            $notation = new DotNotation($entryArray);
+            $notation = new DotNotation((array) $entry);
 
             if (preg_match('/(is|has)/', $key) && method_exists($entry, $key)) {
                 if ($entry->{$key}() === $value) {
@@ -154,17 +153,38 @@ class Collection {
         }
 
         usort($this->entries, function ($a, $b) use ($key, $direction) {
-            $aNotation = new DotNotation($a);
-            $bNotation = new DotNotation($b);
+            $aValue = null;
+            $bValue = null;
+            $methodValuesSet = false;
 
-            if (! $aNotation->has($key) && ! $bNotation->has($key)) {
-                return 0;
-            } else if (! $aNotation->has($key) || ! $bNotation->has($key)) {
-                return $aNotation->has($key) ? -1 : 1;
+            $aHasMethod = is_array($a) === false && method_exists($a, $key);
+            $bHasMethod = is_array($b) === false && method_exists($b, $key);
+            if ($aHasMethod || $bHasMethod) {
+                $methodValuesSet = true;
+
+                if ($aHasMethod) {
+                    $aValue = $a->{$key}();
+                }
+
+                if ($bHasMethod) {
+                    $bValue = $b->{$key}();
+                }
             }
 
-            $aValue = $aNotation->get($key);
-            $bValue = $bNotation->get($key);
+            if (! $methodValuesSet) {
+                $aNotation = new DotNotation((array) $a);
+                $bNotation = new DotNotation((array) $b);
+
+                if (! $aNotation->has($key) && ! $bNotation->has($key)) {
+                    return 0;
+                } else if (! $aNotation->has($key) || ! $bNotation->has($key)) {
+                    return $aNotation->has($key) ? -1 : 1;
+                }
+
+                $aValue = $aNotation->get($key);
+                $bValue = $bNotation->get($key);
+            }
+
             $sortMethod = 'strnatcasecmp';
             if (is_int($aValue) && is_int($bValue)) {
                 $sortMethod = 'strcmp';

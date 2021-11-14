@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class SampleEntity {
     public bool $boolean = false;
+    public string $name = '';
 
     public function isTrue(): bool
     {
@@ -19,6 +20,11 @@ class SampleEntity {
     public function getBoolean(): bool
     {
         return $this->boolean === true;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }
 
@@ -392,6 +398,32 @@ class CollectionTest extends TestCase
             ['name' => 'zoe', 'age' => 33],
             ['name' => 'charlie', 'age' => 19],
         ], $this->collection->sortBy('children.count', 'desc')->toArray());
+    }
+
+    public function testSortByObjectMethod()
+    {
+        $entityOne = new SampleEntity();
+        $entityTwo = new SampleEntity();
+        $entityThree = new SampleEntity();
+        $entityOne->name = 'bob';
+        $entityTwo->name = 'alex';
+
+        $this->collection = new Collection([
+            $entityOne,
+            $entityTwo,
+            $entityThree,
+        ]);
+
+        $this->assertEquals([
+            $entityThree,
+            $entityTwo,
+            $entityOne,
+        ], $this->collection->sortBy('getName', 'asc')->toArray());
+        $this->assertEquals([
+            $entityOne,
+            $entityTwo,
+            $entityThree,
+        ], $this->collection->sortBy('getName', 'desc')->toArray());
     }
 
     public function testSortByInvalidDirection()
