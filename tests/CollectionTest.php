@@ -103,6 +103,17 @@ class CollectionTest extends TestCase
         $this->assertEquals(null, $collection->get('location'));
     }
 
+    public function testGetAsPointer()
+    {
+        $collection = new Collection([
+            ['name' => 'alex', 'age' => '30']
+        ]);
+
+        $reference = $collection->get(0)['name'] = 'bob';
+
+        $this->assertEquals('bob', $collection->get(0)['name']);
+    }
+
     public function testHas()
     {
         $this->assertTrue($this->collection->has(2));
@@ -127,6 +138,17 @@ class CollectionTest extends TestCase
         $this->assertEquals(null, (new Collection([]))->first());
     }
 
+    public function testFirstAsPointer()
+    {
+        $collection = new Collection([
+            ['name' => 'alex', 'age' => '30']
+        ]);
+
+        $reference = $collection->first()['name'] = 'bob';
+
+        $this->assertEquals('bob', $collection->get(0)['name']);
+    }
+
     public function testLast()
     {
         $this->assertEquals('test5', $this->collection->last());
@@ -135,6 +157,17 @@ class CollectionTest extends TestCase
     public function testLastShouldReturnNull()
     {
         $this->assertEquals(null, (new Collection([]))->last());
+    }
+
+    public function testLastAsPointer()
+    {
+        $collection = new Collection([
+            ['name' => 'alex', 'age' => '30']
+        ]);
+
+        $reference = $collection->last()['name'] = 'bob';
+
+        $this->assertEquals('bob', $collection->get(0)['name']);
     }
 
     public function testNext()

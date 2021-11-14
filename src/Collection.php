@@ -36,13 +36,14 @@ class Collection {
         return $this;
     }
 
-    public function get($key)
+    public function &get($key)
     {
+        $result = null;
         if ($this->has($key)) {
-            return $this->entries[$key];
+            $result = &$this->entries[$key];
         }
 
-        return null;
+        return $result;
     }
 
     public function has($key)
@@ -50,12 +51,12 @@ class Collection {
         return array_key_exists($key, $this->entries);
     }
 
-    public function first()
+    public function &first()
     {
         return $this->get(0);
     }
 
-    public function last()
+    public function &last()
     {
         return $this->get(count($this->entries) - 1);
     }
