@@ -17,19 +17,19 @@ class Collection {
         $this->entries = (array) $data;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->entries);
     }
 
-    public function add($value)
+    public function add($value): self
     {
         $this->entries[] = $value;
 
         return $this;
     }
 
-    public function set($key, $value)
+    public function set($key, $value): self
     {
         $this->entries[$key] = $value;
 
@@ -46,7 +46,7 @@ class Collection {
         return $result;
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         return array_key_exists($key, $this->entries);
     }
@@ -81,7 +81,7 @@ class Collection {
         return $this->entries[--$this->cursor];
     }
 
-    public function keyBy(string $key)
+    public function keyBy(string $key): self
     {
         $array = [];
 
@@ -103,12 +103,12 @@ class Collection {
         return $this->whereCallable($callback)->first();
     }
 
-    public function map(Callable $callback)
+    public function map(Callable $callback): self
     {
         return collect(array_map($callback, $this->entries));
     }
 
-    public function where(string $key, $value)
+    public function where(string $key, $value): self
     {
         $results = collect();
         foreach ($this->entries as $entry) {
@@ -133,7 +133,7 @@ class Collection {
         return $results;
     }
 
-    public function whereCallable(Callable $callback)
+    public function whereCallable(Callable $callback): self
     {
         $results = collect();
         foreach ($this->entries as $entry) {
@@ -147,7 +147,7 @@ class Collection {
         return $results;
     }
 
-    public function sortBy(string $key, string $direction)
+    public function sortBy(string $key, string $direction): self
     {
         if (in_array($direction, ['asc', 'desc'], true) === false) {
             throw new \Exception('sortBy#direction must be "asc" or "desc"');
@@ -180,17 +180,17 @@ class Collection {
         return $this;
     }
 
-    public function &items()
+    public function &items(): array
     {
         return $this->entries;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->entries;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return count($this->entries) === 0;
     }
