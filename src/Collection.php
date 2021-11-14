@@ -102,7 +102,7 @@ class Collection {
             $entryArray = (array) $entry;
             $notation = new DotNotation($entryArray);
 
-            if ((str_starts_with($key, 'is') || str_starts_with($key, 'has')) && method_exists($entry, $key)) {
+            if (preg_match('/(is|has)/', $key) && method_exists($entry, $key)) {
                 if ($entry->{$key}() === $value) {
                     $results->add($entry);
                 }
