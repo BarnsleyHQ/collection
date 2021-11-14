@@ -29,13 +29,18 @@ class Collection {
         return $this;
     }
 
-    public function get(int $index)
+    public function get($key)
     {
-        if (!empty($this->entries)) {
-            return $this->entries[$index];
+        if ($this->has($key)) {
+            return $this->entries[$key];
         }
 
         return null;
+    }
+
+    public function has($key)
+    {
+        return array_key_exists($key, $this->entries);
     }
 
     public function first()

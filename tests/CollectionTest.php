@@ -78,6 +78,34 @@ class CollectionTest extends TestCase
         ], $this->collection->toArray());
     }
 
+    public function testGet()
+    {
+        $this->assertEquals('test3', $this->collection->get(2));
+        $this->assertNull($this->collection->get(200));
+    }
+
+    public function testGetAssociative()
+    {
+        $collection = new Collection(['name' => 'alex', 'age' => '30']);
+
+        $this->assertEquals('alex', $collection->get('name'));
+        $this->assertEquals(null, $collection->get('location'));
+    }
+
+    public function testHas()
+    {
+        $this->assertTrue($this->collection->has(2));
+        $this->assertFalse($this->collection->has(200));
+    }
+
+    public function testHasAssociative()
+    {
+        $collection = new Collection(['name' => 'alex', 'age' => '30']);
+
+        $this->assertTrue($collection->has('name'));
+        $this->assertFalse($collection->has('location'));
+    }
+
     public function testFirst()
     {
         $this->assertEquals('test1', $this->collection->first());
