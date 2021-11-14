@@ -102,6 +102,14 @@ class Collection {
             $entryArray = (array) $entry;
             $notation = new DotNotation($entryArray);
 
+            if ((str_starts_with($key, 'is') || str_starts_with($key, 'has')) && method_exists($entry, $key)) {
+                if ($entry->{$key}() === $value) {
+                    $results->add($entry);
+                }
+
+                continue;
+            }
+
             if (! $notation->has($key) || $notation->get($key) !== $value) {
                 continue;
             }
