@@ -10,6 +10,16 @@ class SampleEntity {
     {
         return $this->boolean === true;
     }
+
+    public function hasTrue(): bool
+    {
+        return $this->boolean === true;
+    }
+
+    public function getBoolean(): bool
+    {
+        return $this->boolean === true;
+    }
 }
 
 class CollectionTest extends TestCase
@@ -208,11 +218,15 @@ class CollectionTest extends TestCase
             $entityTwo,
         ], $whereItems->toArray());
 
-        $whereItems = $this->collection->where('isTrue', false);
+        $whereItems = $this->collection->where('hasTrue', false);
 
         $this->assertEquals([
             $entityOne,
         ], $whereItems->toArray());
+
+        $whereItems = $this->collection->where('getBoolean', false);
+
+        $this->assertEquals([], $whereItems->toArray());
     }
 
     public function testWhereShouldSkipIfKeyDoesntExist()
