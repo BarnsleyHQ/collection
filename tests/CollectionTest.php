@@ -467,6 +467,33 @@ class CollectionTest extends TestCase
         $this->assertEquals('pointer1', $this->collection->first());
     }
 
+    public function testValues()
+    {
+        $this->collection = new Collection([
+            '1' => 'test1',
+            '2' => 'test2',
+            '3' => 'test3',
+            '4' => 'test4',
+            '5' => 'test5',
+        ]);
+
+        $this->assertEquals([
+            '1' => 'test1',
+            '2' => 'test2',
+            '3' => 'test3',
+            '4' => 'test4',
+            '5' => 'test5',
+        ], $this->collection->toArray());
+
+        $this->assertEquals([
+            0 => 'test1',
+            1 => 'test2',
+            2 => 'test3',
+            3 => 'test4',
+            4 => 'test5',
+        ], $this->collection->values());
+    }
+
     public function testToArray()
     {
         $this->assertTrue(is_array($this->collection->toArray()));

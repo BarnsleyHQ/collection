@@ -212,6 +212,11 @@ class Collection {
         return $this->entries;
     }
 
+    public function values(): array
+    {
+        return array_values($this->entries);
+    }
+
     public function toArray(): array
     {
         return $this->entries;
