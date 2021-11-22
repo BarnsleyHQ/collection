@@ -219,7 +219,17 @@ class Collection {
 
     public function toArray(): array
     {
-        return $this->entries;
+        $array = [];
+
+        foreach ($this->entries as $key => $value) {
+            if (is_object($value) && get_class($value) === self::class) {
+                $value = $value->toArray();
+            }
+
+            $array[$key] = $value;
+        }
+
+        return $array;
     }
 
     public function isEmpty(): bool
