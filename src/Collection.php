@@ -114,7 +114,7 @@ class Collection {
         foreach ($this->entries as $entry) {
             $notation = new DotNotation((array) $entry);
 
-            if (preg_match('/(is|has)/', $key) && method_exists($entry, $key)) {
+            if (preg_match('/^(is|has)/', $key) && method_exists($entry, $key)) {
                 if ($entry->{$key}() === $value) {
                     $results->add($entry);
                 }

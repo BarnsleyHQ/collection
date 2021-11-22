@@ -12,6 +12,11 @@ class SampleEntity {
         return $this->boolean === true;
     }
 
+    public function getisTrue(): bool
+    {
+        return false;
+    }
+
     public function hasTrue(): bool
     {
         return $this->boolean === true;
@@ -303,6 +308,26 @@ class CollectionTest extends TestCase
         ], $whereItems->toArray());
 
         $whereItems = $this->collection->where('getBoolean', false);
+
+        $this->assertEquals([], $whereItems->toArray());
+    }
+
+    public function testWhereObjectInvalidMethod()
+    {
+        $entityOne = new SampleEntity();
+        $entityTwo = new SampleEntity();
+        $entityTwo->boolean = true;
+
+        $this->collection = new Collection([
+            $entityOne,
+            $entityTwo,
+        ]);
+
+        $whereItems = $this->collection->where('getisTrue', true);
+
+        $this->assertEquals([], $whereItems->toArray());
+
+        $whereItems = $this->collection->where('getisTrue', false);
 
         $this->assertEquals([], $whereItems->toArray());
     }
