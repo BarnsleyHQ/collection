@@ -207,6 +207,36 @@ class Collection {
         return $this;
     }
 
+    public function groupBy(string $key): self
+    {
+        $results = collect();
+        foreach ($this->entries as $entry) {
+            $notation = new DotNotation((array) $entry);
+
+            $value = null;
+            if (preg_match('/^(get)/', $key) && method_exists($entry, $key)) {
+                $value = $entry->{$key}();
+            }
+
+            if ($value === null && (! $notation->has($key) || $notation->get($key) === null)) {
+                continue;
+            }
+
+            $value = $value ?: $notation->get($key);
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            if (! $results->has($value)) {
+                $results->set($value, collect());
+            }
+
+            $results->get($value)->add($entry);
+        }
+
+        return $results;
+    }
+
     public function &items(): array
     {
         return $this->entries;

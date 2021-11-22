@@ -483,6 +483,54 @@ class CollectionTest extends TestCase
         $this->collection->sortBy('age', 'up');
     }
 
+    public function testGroupBy()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'charlie', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'bill'],
+        ]);
+
+        $this->assertEquals([
+            30 => [
+                ['name' => 'alex', 'age' => 30],
+                ['name' => 'charlie', 'age' => 30],
+            ],
+            33 => [
+                ['name' => 'zoe', 'age' => 33],
+            ],
+        ], $this->collection->groupBy('age')->toArray());
+    }
+
+    public function testGroupByMethod()
+    {
+        $entityOne = new SampleEntity();
+        $entityTwo = new SampleEntity();
+        $entityThree = new SampleEntity();
+        $entityFour = new SampleEntity();
+        $entityOne->name = 'bob';
+        $entityTwo->name = 'alex';
+        $entityFour->name = 'bob';
+
+        $this->collection = new Collection([
+            $entityOne,
+            $entityTwo,
+            $entityThree,
+            $entityFour,
+        ]);
+
+        $this->assertEquals([
+            'bob' => [
+                $entityOne,
+                $entityFour,
+            ],
+            'alex' => [
+                $entityTwo,
+            ],
+        ], $this->collection->groupBy('getName')->toArray());
+    }
+
     public function testItemsPointer()
     {
         $this->assertEquals('test1', $this->collection->first());
