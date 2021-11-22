@@ -500,7 +500,7 @@ class CollectionTest extends TestCase
             33 => [
                 ['name' => 'zoe', 'age' => 33],
             ],
-        ], $this->collection->groupBy('age')->toArray());
+        ], $this->collection->groupBy('age')->toArray(true));
     }
 
     public function testGroupByMethod()
@@ -528,7 +528,7 @@ class CollectionTest extends TestCase
             'alex' => [
                 $entityTwo,
             ],
-        ], $this->collection->groupBy('getName')->toArray());
+        ], $this->collection->groupBy('getName')->toArray(true));
     }
 
     public function testItemsPointer()
@@ -569,7 +569,48 @@ class CollectionTest extends TestCase
 
     public function testToArray()
     {
-        $this->assertTrue(is_array($this->collection->toArray()));
+        $adminCollection = new Collection([
+            ['name' => 'alex'],
+            ['name' => 'bob'],
+        ]);
+        $userCollection = new Collection([
+            ['name' => 'charlie'],
+            ['name' => 'darwin'],
+        ]);
+        $this->collection = (new Collection())
+            ->set('admin', $adminCollection)
+            ->set('user', $userCollection);
+
+        $this->assertEquals([
+            'admin' => $adminCollection,
+            'user' => $userCollection,
+        ], $this->collection->toArray());
+    }
+
+    public function testToArrayNestedConversion()
+    {
+        $adminCollection = new Collection([
+            ['name' => 'alex'],
+            ['name' => 'bob'],
+        ]);
+        $userCollection = new Collection([
+            ['name' => 'charlie'],
+            ['name' => 'darwin'],
+        ]);
+        $this->collection = (new Collection())
+            ->set('admin', $adminCollection)
+            ->set('user', $userCollection);
+
+        $this->assertEquals([
+            'admin' => [
+                ['name' => 'alex'],
+                ['name' => 'bob'],
+            ],
+            'user' => [
+                ['name' => 'charlie'],
+                ['name' => 'darwin'],
+            ],
+        ], $this->collection->toArray(true));
     }
 
     public function testIsEmpty()

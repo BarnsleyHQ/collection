@@ -247,8 +247,12 @@ class Collection {
         return array_values($this->entries);
     }
 
-    public function toArray(): array
+    public function toArray(bool $includeNested = false): array
     {
+        if (! $includeNested) {
+            return $this->entries;
+        }
+
         $array = [];
 
         foreach ($this->entries as $key => $value) {
