@@ -29,6 +29,11 @@ class Collection {
         return $this;
     }
 
+    public function push($value): self
+    {
+        return $this->add($value);
+    }
+
     public function set($key, $value): self
     {
         $this->entries[$key] = $value;

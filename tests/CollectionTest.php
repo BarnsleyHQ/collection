@@ -89,6 +89,28 @@ class CollectionTest extends TestCase
         ], $this->collection->toArray());
     }
 
+    public function testPush()
+    {
+        $this->assertEquals([
+            'test1',
+            'test2',
+            'test3',
+            'test4',
+            'test5',
+        ], $this->collection->toArray());
+
+        $this->collection->push('new test');
+
+        $this->assertEquals([
+            'test1',
+            'test2',
+            'test3',
+            'test4',
+            'test5',
+            'new test',
+        ], $this->collection->toArray());
+    }
+
     public function testSet()
     {
         $this->assertEquals('test3', $this->collection->get(2));
