@@ -34,6 +34,22 @@ class Collection {
         return $this->add($value);
     }
 
+    public function concat(self $collection): self
+    {
+        $isAssociative = $collection->isAssoc();
+        foreach ($collection->toArray() as $key => $value) {
+            if ($isAssociative) {
+                $this->set($key, $value);
+
+                continue;
+            }
+
+            $this->add($value);
+        }
+
+        return $this;
+    }
+
     public function set($key, $value): self
     {
         $this->entries[$key] = $value;

@@ -111,6 +111,53 @@ class CollectionTest extends TestCase
         ], $this->collection->toArray());
     }
 
+    public function testConcat()
+    {
+        $oldCollection = new Collection([
+            'test1',
+            'test2',
+            'test5',
+        ]);
+        $newCollection = new Collection([
+            'test3',
+            'test4',
+        ]);
+
+        $oldCollection->concat($newCollection);
+
+        $this->assertEquals([
+            'test1',
+            'test2',
+            'test5',
+            'test3',
+            'test4',
+        ], $oldCollection->toArray());
+    }
+
+    public function testConcatWithAssociativeArray()
+    {
+        $oldCollection = new Collection([
+            'test1' => 'Testing 1',
+            'test2' => 'Testing 2',
+            'test5' => 'Testing 5',
+        ]);
+        $newCollection = new Collection([
+            'test3' => 'Testing 3',
+            'test4' => 'Testing 4',
+            'test5' => 'Testing 5 updated',
+        ]);
+
+        $oldCollection->concat($newCollection);
+
+        $this->assertEquals([
+            'test1' => 'Testing 1',
+            'test2' => 'Testing 2',
+            'test5' => 'Testing 5 updated',
+            'test3' => 'Testing 3',
+            'test4' => 'Testing 4',
+        ], $oldCollection->toArray());
+    }
+
     public function testSet()
     {
         $this->assertEquals('test3', $this->collection->get(2));
