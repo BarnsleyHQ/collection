@@ -553,6 +553,29 @@ class CollectionTest extends TestCase
         ], $this->collection->groupBy('getName')->toArray(true));
     }
 
+    public function testIsEmpty()
+    {
+        $this->assertFalse($this->collection->isEmpty());
+        $this->assertTrue((new Collection())->isEmpty());
+    }
+
+    public function testIsAssoc()
+    {
+        $assocCollection = new Collection([
+            30 => [
+                ['name' => 'alex', 'age' => 30],
+                ['name' => 'charlie', 'age' => 30],
+            ],
+            33 => [
+                ['name' => 'zoe', 'age' => 33],
+            ],
+        ]);
+
+        $this->assertTrue($assocCollection->isAssoc());
+        $this->assertFalse($this->collection->isAssoc());
+        $this->assertFalse((new Collection())->isAssoc());
+    }
+
     public function testItemsPointer()
     {
         $this->assertEquals('test1', $this->collection->first());
@@ -633,11 +656,5 @@ class CollectionTest extends TestCase
                 ['name' => 'darwin'],
             ],
         ], $this->collection->toArray(true));
-    }
-
-    public function testIsEmpty()
-    {
-        $this->assertFalse($this->collection->isEmpty());
-        $this->assertTrue((new Collection())->isEmpty());
     }
 }

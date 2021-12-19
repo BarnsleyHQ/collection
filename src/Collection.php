@@ -242,6 +242,20 @@ class Collection {
         return $results;
     }
 
+    public function isEmpty(): bool
+    {
+        return count($this->entries) === 0;
+    }
+
+    public function isAssoc(): bool
+    {
+        if (count($this->entries) === 0) {
+            return false;
+        }
+
+        return array_keys($this->entries) !== array_keys(array_values($this->entries));
+    }
+
     public function &items(): array
     {
         return $this->entries;
@@ -269,10 +283,5 @@ class Collection {
         }
 
         return $array;
-    }
-
-    public function isEmpty(): bool
-    {
-        return count($this->entries) === 0;
     }
 }
