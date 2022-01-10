@@ -277,6 +277,11 @@ class Collection {
         return $this->entries;
     }
 
+    public function keys(): array
+    {
+        return array_keys($this->entries);
+    }
+
     public function values(): array
     {
         return array_values($this->entries);
