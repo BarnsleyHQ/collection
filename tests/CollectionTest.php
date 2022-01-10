@@ -12,7 +12,7 @@ class SampleEntity {
         return $this->boolean === true;
     }
 
-    public function getisTrue(): bool
+    public function testisTrue(): bool
     {
         return false;
     }
@@ -189,7 +189,7 @@ class CollectionTest extends TestCase
             ['name' => 'alex', 'age' => '30']
         ]);
 
-        $reference = $collection->get(0)['name'] = 'bob';
+        $collection->get(0)['name'] = 'bob';
 
         $this->assertEquals('bob', $collection->get(0)['name']);
     }
@@ -378,6 +378,12 @@ class CollectionTest extends TestCase
 
         $whereItems = $this->collection->where('getBoolean', false);
 
+        $this->assertEquals([
+            $entityOne,
+        ], $whereItems->toArray());
+
+        $whereItems = $this->collection->where('testMethod', false);
+
         $this->assertEquals([], $whereItems->toArray());
     }
 
@@ -392,11 +398,19 @@ class CollectionTest extends TestCase
             $entityTwo,
         ]);
 
-        $whereItems = $this->collection->where('getisTrue', true);
+        $whereItems = $this->collection->where('getBoolean', true);
+
+        $this->assertEquals([$entityTwo], $whereItems->toArray());
+
+        $whereItems = $this->collection->where('getBoolean', false);
+
+        $this->assertEquals([$entityOne], $whereItems->toArray());
+
+        $whereItems = $this->collection->where('testisTrue', true);
 
         $this->assertEquals([], $whereItems->toArray());
 
-        $whereItems = $this->collection->where('getisTrue', false);
+        $whereItems = $this->collection->where('testisTrue', false);
 
         $this->assertEquals([], $whereItems->toArray());
     }
