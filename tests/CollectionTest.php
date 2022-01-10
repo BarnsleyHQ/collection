@@ -614,6 +614,14 @@ class CollectionTest extends TestCase
         ], $this->collection->groupBy('getName')->toArray(true));
     }
 
+    public function testJoin()
+    {
+        $this->assertEquals(
+            'test1-test2-test3-test4-test5',
+            $this->collection->join('-')
+        );
+    }
+
     public function testIsEmpty()
     {
         $this->assertFalse($this->collection->isEmpty());

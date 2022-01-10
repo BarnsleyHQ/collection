@@ -258,6 +258,11 @@ class Collection {
         return $results;
     }
 
+    public function join(string $separator): string
+    {
+        return implode($separator, $this->entries);
+    }
+
     public function isEmpty(): bool
     {
         return count($this->entries) === 0;
