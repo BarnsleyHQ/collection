@@ -614,6 +614,22 @@ class CollectionTest extends TestCase
         ], $this->collection->groupBy('getName')->toArray(true));
     }
 
+    public function testPluck()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'charlie', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'bill'],
+        ]);
+
+        $this->assertEquals([
+            30,
+            30,
+            33
+        ], $this->collection->pluck('age'));
+    }
+
     public function testJoin()
     {
         $this->assertEquals(

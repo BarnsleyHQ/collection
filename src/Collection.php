@@ -258,6 +258,20 @@ class Collection {
         return $results;
     }
 
+    public function pluck($key): array
+    {
+        $data = [];
+        foreach ($this->entries as $entry) {
+            if (! isset($entry[$key])) {
+                continue;
+            }
+
+            $data[] = $entry[$key];
+        }
+
+        return $data;
+    }
+
     public function join(string $separator): string
     {
         return implode($separator, $this->entries);
