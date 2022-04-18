@@ -4,8 +4,8 @@ use AlexBarnsley\Collection;
 use PHPUnit\Framework\TestCase;
 
 class SampleEntity {
-    public bool $boolean = false;
-    public string $name = '';
+    public $boolean = false;
+    public $name = '';
 
     public function isTrue(): bool
     {
@@ -37,7 +37,7 @@ class CollectionTest extends TestCase
 {
     private $collection;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->collection = new Collection([
             'test1',
@@ -302,7 +302,9 @@ class CollectionTest extends TestCase
         ]);
 
         $result = $this->collection
-            ->find(fn ($item) => $item['age'] === 30);
+            ->find(function ($item) {
+                return $item['age'] === 30;
+            });
 
         $this->assertEquals(['name' => 'alex', 'age' => 30], $result);
     }
@@ -445,7 +447,9 @@ class CollectionTest extends TestCase
         ]);
 
         $whereItems = $this->collection
-            ->whereCallable(fn ($item) => $item['age'] === 30);
+            ->whereCallable(function ($item) {
+                return $item['age'] === 30;
+            });
 
         $this->assertEquals([
             ['name' => 'alex', 'age' => 30],
