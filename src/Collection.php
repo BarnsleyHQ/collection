@@ -2,11 +2,15 @@
 
 namespace AlexBarnsley;
 
+use ArrayAccess;
+use ArrayIterator;
 use Adbar\Dot as DotNotation;
+use Countable;
+use IteratorAggregate;
 
-class Collection {
-    private $entries;
-    private $cursor = -1;
+class Collection implements ArrayAccess, Countable, IteratorAggregate
+{
+    protected $entries;
 
     public function __construct($data = [])
     {
@@ -82,26 +86,6 @@ class Collection {
         return $this->get(count($this->entries) - 1);
     }
 
-    public function next()
-    {
-        if (! array_key_exists($this->cursor + 1, $this->entries)) {
-            return null;
-        }
-
-        return $this->entries[++$this->cursor];
-    }
-
-    public function previous()
-    {
-        if ($this->cursor <= 0) {
-            $this->cursor = -1;
-
-            return null;
-        }
-
-        return $this->entries[--$this->cursor];
-    }
-
     public function keyBy(string $key): self
     {
         $array = [];
@@ -165,6 +149,11 @@ class Collection {
         }
 
         return $results;
+    }
+
+    public function filter(Callable $callback): self
+    {
+        return $this->whereCallable($callback);
     }
 
     public function sort(Callable $callback): self
@@ -306,8 +295,13 @@ class Collection {
         return array_values($this->entries);
     }
 
-    public function toArray(bool $includeNested = false): array
+    public function toArray(): array
     {
+        $includeNested = true;
+        if (count(func_get_args()) >= 1 && gettype(func_get_arg(0)) === 'boolean') {
+            $includeNested = func_get_arg(0);
+        }
+
         if (! $includeNested) {
             return $this->entries;
         }
@@ -323,5 +317,34 @@ class Collection {
         }
 
         return $array;
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->entries);
+    }
+
+    public function offsetExists($key)
+    {
+        return isset($this->entries[$key]);
+    }
+
+    public function offsetGet($key)
+    {
+        return isset($this->entries[$key]) ? $this->entries[$key] : null;
+    }
+
+    public function offsetSet($key, $value)
+    {
+        if (is_null($key)) {
+            $this->entries[] = $value;
+        } else {
+            $this->entries[$key] = $value;
+        }
+    }
+
+    public function offsetUnset($key)
+    {
+        unset($this->entries[$key]);
     }
 }

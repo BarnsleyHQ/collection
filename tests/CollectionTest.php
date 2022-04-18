@@ -67,6 +67,11 @@ class CollectionTest extends TestCase
         $this->assertEquals(5, $this->collection->count());
     }
 
+    public function testCountable()
+    {
+        $this->assertCount(5, $this->collection);
+    }
+
     public function testAdd()
     {
         $this->assertEquals([
@@ -248,29 +253,6 @@ class CollectionTest extends TestCase
         $reference = $collection->last()['name'] = 'bob';
 
         $this->assertEquals('bob', $collection->get(0)['name']);
-    }
-
-    public function testNext()
-    {
-        $this->assertEquals('test1', $this->collection->next());
-        $this->assertEquals('test2', $this->collection->next());
-        $this->assertEquals('test3', $this->collection->next());
-        $this->assertEquals('test4', $this->collection->next());
-        $this->assertEquals('test5', $this->collection->next());
-        $this->assertEquals(null, $this->collection->next());
-    }
-
-    public function testPrevious()
-    {
-        $this->assertEquals(null, $this->collection->previous());
-        $this->collection->next();
-        $this->collection->next();
-        $this->collection->next();
-        $this->collection->next();
-        $this->assertEquals('test3', $this->collection->previous());
-        $this->assertEquals('test2', $this->collection->previous());
-        $this->assertEquals('test1', $this->collection->previous());
-        $this->assertEquals(null, $this->collection->previous());
     }
 
     public function testKeyBy()
@@ -455,6 +437,27 @@ class CollectionTest extends TestCase
             ['name' => 'alex', 'age' => 30],
             ['name' => 'billie', 'age' => 30],
         ], $whereItems->toArray());
+    }
+
+    public function testFilterAlias()
+    {
+        $this->collection = new Collection([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'zoe', 'age' => 33],
+            ['name' => 'bob', 'age' => 28],
+            ['name' => 'billie', 'age' => 30],
+            ['name' => 'fran', 'age' => 19],
+        ]);
+
+        $filterItems = $this->collection
+            ->filter(function ($item) {
+                return $item['age'] === 30;
+            });
+
+        $this->assertEquals([
+            ['name' => 'alex', 'age' => 30],
+            ['name' => 'billie', 'age' => 30],
+        ], $filterItems->toArray());
     }
 
     public function testSort()
@@ -745,7 +748,22 @@ class CollectionTest extends TestCase
         $this->assertEquals([
             'admin' => $adminCollection,
             'user' => $userCollection,
-        ], $this->collection->toArray());
+        ], $this->collection->toArray(false));
+    }
+
+    public function testIterator()
+    {
+        $items = [
+            'test1',
+            'test2',
+            'test3',
+            'test4',
+            'test5',
+        ];
+
+        foreach ($this->collection as $item) {
+            $this->assertContains($item, $items);
+        }
     }
 
     public function testToArrayNestedConversion()
@@ -771,6 +789,6 @@ class CollectionTest extends TestCase
                 ['name' => 'charlie'],
                 ['name' => 'darwin'],
             ],
-        ], $this->collection->toArray(true));
+        ], $this->collection->toArray());
     }
 }
