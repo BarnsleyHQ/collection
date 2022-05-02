@@ -78,7 +78,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function &first()
     {
-        return $this->get(0);
+        if ($this->count() === 0) {
+            $value = null;
+
+            return $value;
+        }
+
+        return $this->get($this->keys()[0]);
     }
 
     public function &last()

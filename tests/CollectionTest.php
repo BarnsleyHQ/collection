@@ -218,6 +218,16 @@ class CollectionTest extends TestCase
         $this->assertEquals('test1', $this->collection->first());
     }
 
+    public function testFirstAssociatedArray()
+    {
+        $collection = new Collection([
+            1 => ['name' => 'alex', 'age' => '30'],
+            2 => ['name' => 'bob', 'age' => '29'],
+        ]);
+
+        $this->assertEquals(['name' => 'alex', 'age' => '30'], $collection->first());
+    }
+
     public function testFirstShouldReturnNull()
     {
         $this->assertEquals(null, (new Collection([]))->first());
