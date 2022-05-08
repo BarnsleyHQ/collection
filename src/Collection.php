@@ -301,6 +301,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return array_values($this->entries);
     }
 
+    public function unique(int $flags = SORT_STRING): array
+    {
+        return collect(array_unique($this->entries))->values();
+    }
+
+    public function uniqueWithKeys(int $flags = SORT_STRING): array
+    {
+        return array_unique($this->entries);
+    }
+
     public function toArray(): array
     {
         $includeNested = true;

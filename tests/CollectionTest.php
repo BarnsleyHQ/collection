@@ -698,14 +698,6 @@ class CollectionTest extends TestCase
         ]);
 
         $this->assertEquals([
-            '1' => 'test1',
-            '2' => 'test2',
-            '3' => 'test3',
-            '4' => 'test4',
-            '5' => 'test5',
-        ], $this->collection->toArray());
-
-        $this->assertEquals([
             0 => '1',
             1 => '2',
             2 => '3',
@@ -725,20 +717,48 @@ class CollectionTest extends TestCase
         ]);
 
         $this->assertEquals([
-            '1' => 'test1',
-            '2' => 'test2',
-            '3' => 'test3',
-            '4' => 'test4',
-            '5' => 'test5',
-        ], $this->collection->toArray());
-
-        $this->assertEquals([
             0 => 'test1',
             1 => 'test2',
             2 => 'test3',
             3 => 'test4',
             4 => 'test5',
         ], $this->collection->values());
+    }
+
+    public function testUnique()
+    {
+        $this->collection = new Collection([
+            '1' => 'test1',
+            '2' => 'test2',
+            '3' => 'test3',
+            '4' => 'test3',
+            '5' => 'test5',
+        ]);
+
+        $this->assertEquals([
+            0 => 'test1',
+            1 => 'test2',
+            2 => 'test3',
+            3 => 'test5',
+        ], $this->collection->unique());
+    }
+
+    public function testUniqueWithKeys()
+    {
+        $this->collection = new Collection([
+            '1' => 'test1',
+            '2' => 'test2',
+            '3' => 'test3',
+            '4' => 'test3',
+            '5' => 'test5',
+        ]);
+
+        $this->assertEquals([
+            '1' => 'test1',
+            '2' => 'test2',
+            '3' => 'test3',
+            '5' => 'test5',
+        ], $this->collection->uniqueWithKeys());
     }
 
     public function testToArray()
@@ -759,21 +779,6 @@ class CollectionTest extends TestCase
             'admin' => $adminCollection,
             'user' => $userCollection,
         ], $this->collection->toArray(false));
-    }
-
-    public function testIterator()
-    {
-        $items = [
-            'test1',
-            'test2',
-            'test3',
-            'test4',
-            'test5',
-        ];
-
-        foreach ($this->collection as $item) {
-            $this->assertContains($item, $items);
-        }
     }
 
     public function testToArrayNestedConversion()
@@ -800,5 +805,20 @@ class CollectionTest extends TestCase
                 ['name' => 'darwin'],
             ],
         ], $this->collection->toArray());
+    }
+
+    public function testIterator()
+    {
+        $items = [
+            'test1',
+            'test2',
+            'test3',
+            'test4',
+            'test5',
+        ];
+
+        foreach ($this->collection as $item) {
+            $this->assertContains($item, $items);
+        }
     }
 }
