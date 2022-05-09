@@ -725,6 +725,25 @@ class CollectionTest extends TestCase
         ], $this->collection->values());
     }
 
+    public function testValuesAsCollection()
+    {
+        $this->collection = new Collection([
+            '1' => 'test1',
+            '2' => 'test2',
+            '3' => 'test3',
+            '4' => 'test4',
+            '5' => 'test5',
+        ]);
+
+        $this->assertEquals([
+            0 => 'test1',
+            1 => 'test2',
+            2 => 'test3',
+            3 => 'test4',
+            4 => 'test5',
+        ], $this->collection->valuesAsCollection()->toArray());
+    }
+
     public function testUnique()
     {
         $this->collection = new Collection([
@@ -740,7 +759,7 @@ class CollectionTest extends TestCase
             1 => 'test2',
             2 => 'test3',
             3 => 'test5',
-        ], $this->collection->unique());
+        ], $this->collection->unique()->toArray());
     }
 
     public function testUniqueWithKeys()
@@ -758,7 +777,7 @@ class CollectionTest extends TestCase
             '2' => 'test2',
             '3' => 'test3',
             '5' => 'test5',
-        ], $this->collection->uniqueWithKeys());
+        ], $this->collection->uniqueWithKeys()->toArray());
     }
 
     public function testToArray()

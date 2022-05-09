@@ -301,14 +301,19 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return array_values($this->entries);
     }
 
-    public function unique(int $flags = SORT_STRING): array
+    public function valuesAsCollection(): self
     {
-        return collect(array_unique($this->entries))->values();
+        return collect(array_values($this->entries));
     }
 
-    public function uniqueWithKeys(int $flags = SORT_STRING): array
+    public function unique(int $flags = SORT_STRING): self
     {
-        return array_unique($this->entries);
+        return collect(array_unique($this->entries))->valuesAsCollection();
+    }
+
+    public function uniqueWithKeys(int $flags = SORT_STRING): self
+    {
+        return collect(array_unique($this->entries));
     }
 
     public function toArray(): array
