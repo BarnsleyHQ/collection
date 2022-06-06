@@ -644,7 +644,7 @@ class CollectionTest extends TestCase
             30,
             30,
             33
-        ], $this->collection->pluck('age'));
+        ], $this->collection->pluck('age')->toArray());
     }
 
     public function testJoin()

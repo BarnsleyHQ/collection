@@ -253,7 +253,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $results;
     }
 
-    public function pluck($key): array
+    public function pluck($key, bool $asCollection = false): Collection
     {
         $data = [];
         foreach ($this->entries as $entry) {
@@ -264,7 +264,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             $data[] = $entry[$key];
         }
 
-        return $data;
+        return collect($data);
     }
 
     public function join(string $separator): string
