@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "adbario/php-dot-notation": "^2.2",
-        "php": "^7.0"
+        "php": "^7.0|^8.0"
     },
     "autoload": {
         "files": [
