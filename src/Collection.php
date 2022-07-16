@@ -76,6 +76,26 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return array_key_exists($key, $this->entries);
     }
 
+    public function replace(string $find, string $replace, $key = null): self
+    {
+        $method = 'str_replace';
+        if ($find[0] === '/') {
+            $method = 'preg_replace';
+        }
+
+        foreach ($this->entries as &$entry) {
+            if ($key) {
+                $entry[$key] = $method($find, $replace, $entry[$key]);
+
+                continue;
+            }
+
+            $entry = $method($find, $replace, $entry);
+        }
+
+        return $this;
+    }
+
     public function &first()
     {
         if ($this->count() === 0) {

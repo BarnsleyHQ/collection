@@ -205,6 +205,62 @@ class CollectionTest extends TestCase
         $this->assertFalse($this->collection->has(200));
     }
 
+    public function testReplaceSingleValueArrayWithRegex()
+    {
+        $this->collection->replace('/^t/', 'b');
+
+        $this->assertEquals([
+            'best1',
+            'best2',
+            'best3',
+            'best4',
+            'best5',
+        ], $this->collection->toArray());
+    }
+
+    public function testReplaceSingleValueArrayWithoutRegex()
+    {
+        $this->collection->replace('t', 'b');
+
+        $this->assertEquals([
+            'besb1',
+            'besb2',
+            'besb3',
+            'besb4',
+            'besb5',
+        ], $this->collection->toArray());
+    }
+
+    public function testReplaceKeyValueArrayWithRegex()
+    {
+        $this->collection = collect([
+            ['name' => 'alex', 'age' => '30'],
+            ['name' => 'bob', 'age' => '30'],
+            ['name' => 'joe', 'age' => 'twenty-four'],
+        ])->replace('/^30$/', 'thirty');
+
+        $this->assertEquals([
+            ['name' => 'alex', 'age' => 'thirty'],
+            ['name' => 'bob', 'age' => 'thirty'],
+            ['name' => 'joe', 'age' => 'twenty-four'],
+        ], $this->collection->toArray());
+    }
+
+    public function testReplaceKeyValueArrayWithoutRegex()
+    {
+        $this->collection = collect([
+            ['name' => 'alex', 'age' => '30'],
+            ['name' => 'bob', 'age' => '30'],
+            ['name' => 'joe', 'age' => 'twenty-four'],
+        ])->replace('twenty-four', 24);
+
+        $this->assertEquals([
+            ['name' => 'alex', 'age' => '30'],
+            ['name' => 'bob', 'age' => '30'],
+            ['name' => 'joe', 'age' => '24'],
+        ], $this->collection->toArray());
+    }
+
     public function testHasAssociative()
     {
         $collection = new Collection(['name' => 'alex', 'age' => '30']);
