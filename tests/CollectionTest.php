@@ -233,11 +233,11 @@ class CollectionTest extends TestCase
 
     public function testReplaceKeyValueArrayWithRegex()
     {
-        $this->collection = collect([
+        $this->collection = (new Collection([
             ['name' => 'alex', 'age' => '30'],
             ['name' => 'bob', 'age' => '30'],
             ['name' => 'joe', 'age' => 'twenty-four'],
-        ])->replace('/^30$/', 'thirty');
+        ]))->replace('/^30$/', 'thirty');
 
         $this->assertEquals([
             ['name' => 'alex', 'age' => 'thirty'],
@@ -248,11 +248,11 @@ class CollectionTest extends TestCase
 
     public function testReplaceKeyValueArrayWithoutRegex()
     {
-        $this->collection = collect([
+        $this->collection = (new Collection([
             ['name' => 'alex', 'age' => '30'],
             ['name' => 'bob', 'age' => '30'],
             ['name' => 'joe', 'age' => 'twenty-four'],
-        ])->replace('twenty-four', 24);
+        ]))->replace('twenty-four', 24);
 
         $this->assertEquals([
             ['name' => 'alex', 'age' => '30'],

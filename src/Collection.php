@@ -126,7 +126,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             }
         }
 
-        return collect($array);
+        return new self($array);
     }
 
     public function find(Callable $callback)
@@ -136,12 +136,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function map(Callable $callback): self
     {
-        return collect(array_map($callback, $this->entries));
+        return new self(array_map($callback, $this->entries));
     }
 
     public function where(string $key, $value): self
     {
-        $results = collect();
+        $results = new self();
         foreach ($this->entries as $entry) {
             $notation = new DotNotation((array) $entry);
 
@@ -165,7 +165,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function whereCallable(Callable $callback): self
     {
-        $results = collect();
+        $results = new self();
         foreach ($this->entries as $entry) {
             if (! $callback($entry)) {
                 continue;
@@ -245,7 +245,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function groupBy(string $key): self
     {
-        $results = collect();
+        $results = new self();
         foreach ($this->entries as $entry) {
             $notation = new DotNotation((array) $entry);
 
@@ -264,7 +264,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             }
 
             if (! $results->has($value)) {
-                $results->set($value, collect());
+                $results->set($value, new self());
             }
 
             $results->get($value)->add($entry);
@@ -284,7 +284,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             $data[] = $entry[$key];
         }
 
-        return collect($data);
+        return new self($data);
     }
 
     public function join(string $separator): string
@@ -323,17 +323,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function valuesAsCollection(): self
     {
-        return collect(array_values($this->entries));
+        return new self(array_values($this->entries));
     }
 
     public function unique(int $flags = SORT_STRING): self
     {
-        return collect(array_unique($this->entries))->valuesAsCollection();
+        return (new self(array_unique($this->entries)))->valuesAsCollection();
     }
 
     public function uniqueWithKeys(int $flags = SORT_STRING): self
     {
-        return collect(array_unique($this->entries));
+        return new self(array_unique($this->entries));
     }
 
     public function toArray(): array
