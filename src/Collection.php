@@ -12,6 +12,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
     protected $entries;
 
+    public static function __set_state(array $data): self
+    {
+        return new self($data['entries']);
+    }
+
     public function __construct($data = [])
     {
         if ($data instanceof Collection) {
@@ -26,6 +31,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return count($this->entries);
     }
 
+    public function sum(): int
+    {
+        return array_sum($this->entries);
+    }
+
     public function add($value): self
     {
         $this->entries[] = $value;
@@ -36,6 +46,33 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function push($value): self
     {
         return $this->add($value);
+    }
+
+    public function remove($key): self
+    {
+        $collection = new self();
+        foreach ($this->entries as $entryKey => $entry) {
+            if ($entryKey === $key) {
+                continue;
+            }
+
+            $collection->set($entryKey, $entry);
+        }
+
+        return $collection;
+    }
+
+    public function take(int $count): self
+    {
+        return new self(array_slice(
+            $this->entries,
+            -$count
+        ));
+    }
+
+    public function reverse(): self
+    {
+        return new self(array_reverse($this->entries));
     }
 
     public function concat(self $collection): self
@@ -74,6 +111,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function has($key): bool
     {
         return array_key_exists($key, $this->entries);
+    }
+
+    public function chunk(int $count): self
+    {
+        return new self(array_chunk($this->entries, $count));
     }
 
     public function replace(string $find, string $replace, $key = null): self
