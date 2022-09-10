@@ -7,6 +7,13 @@ class SampleEntity {
     public $boolean = false;
     public $name = '';
 
+    public function __construct($name = null)
+    {
+        if ($name !== null) {
+            $this->name = $name;
+        }
+    }
+
     public function isTrue(): bool
     {
         return $this->boolean === true;
@@ -351,6 +358,28 @@ class CollectionTest extends TestCase
             'alex' => ['name' => 'alex', 'age' => '30'],
             'zoe'  => ['name' => 'zoe', 'age' => '31'],
             'bob'  => ['name' => 'bob', 'age' => '32'],
+        ], $keyed->toArray());
+    }
+
+    public function testKeyByProperty()
+    {
+        $entityOne = new SampleEntity('test');
+        $entityTwo = new SampleEntity('test');
+        $entityThree = new SampleEntity('testing');
+        $collection = new Collection([
+            $entityOne,
+            $entityTwo,
+            $entityThree,
+            'test',
+        ]);
+
+        $this->assertTrue(property_exists($collection[0], 'name'));
+
+        $keyed = $collection->keyBy('name');
+
+        $this->assertEquals([
+            'test'    => $entityTwo,
+            'testing' => $entityThree,
         ], $keyed->toArray());
     }
 
