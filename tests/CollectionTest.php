@@ -981,6 +981,49 @@ class CollectionTest extends TestCase
         $this->assertEquals([[1, 2], [3, 4], [5]], $items->chunk(2)->toArray());
     }
 
+    public function testShouldGetNextValue()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals(1, $items->next());
+        $this->assertEquals(2, $items->next());
+        $this->assertEquals(3, $items->next());
+    }
+
+    public function testShouldNotGetNextIfCursorIsOutOfBounds()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals(1, $items->next());
+        $this->assertEquals(2, $items->next());
+        $this->assertEquals(3, $items->next());
+        $this->assertEquals(4, $items->next());
+        $this->assertEquals(5, $items->next());
+        $this->assertEquals(null, $items->next());
+    }
+
+    public function testShouldGetPreviousValue()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals(1, $items->next());
+        $this->assertEquals(2, $items->next());
+        $this->assertEquals(3, $items->next());
+        $this->assertEquals(2, $items->previous());
+    }
+
+    public function testShouldNotGetPreviousIfCursorIsOutOfBounds()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals(1, $items->next());
+        $this->assertEquals(2, $items->next());
+        $this->assertEquals(3, $items->next());
+        $this->assertEquals(2, $items->previous());
+        $this->assertEquals(1, $items->previous());
+        $this->assertEquals(null, $items->previous());
+    }
+
     public function testShouldAllowIsset()
     {
         $items = new Collection([1, 2, 3, 4, 5]);

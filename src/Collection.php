@@ -11,6 +11,7 @@ use IteratorAggregate;
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
     protected $entries;
+    protected $cursor = -1;
 
     public static function __set_state(array $data): self
     {
@@ -152,6 +153,26 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function &last()
     {
         return $this->get(count($this->entries) - 1);
+    }
+
+    public function next()
+    {
+        if (! array_key_exists($this->cursor + 1, $this->entries)) {
+            return null;
+        }
+
+        return $this->entries[++$this->cursor];
+    }
+
+    public function previous()
+    {
+        if ($this->cursor <= 0) {
+            $this->cursor = -1;
+
+            return null;
+        }
+
+        return $this->entries[--$this->cursor];
     }
 
     public function keyBy(string $key): self
