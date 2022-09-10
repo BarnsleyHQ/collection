@@ -159,12 +159,14 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         $array = [];
 
         foreach ($this->entries as $entry) {
-            if (!is_array($entry)) {
+            if (! is_array($entry)) {
                 continue;
             }
 
             if (array_key_exists($key, $entry)) {
                 $array[$entry[$key]] = $entry;
+            } else if (property_exists($entry, $key)) {
+                $array[$entry->$key] = $entry;
             }
         }
 
