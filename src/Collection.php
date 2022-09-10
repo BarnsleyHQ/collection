@@ -317,7 +317,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $results;
     }
 
-    public function pluck($key, bool $asCollection = false): Collection
+    public function pluck($key): Collection
     {
         $data = [];
         foreach ($this->entries as $entry) {
