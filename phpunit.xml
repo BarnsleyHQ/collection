@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:noNamespaceSchemaLocation="phpunit.xsd"
-		 colors="true"
-		 verbose="true">
-	<testsuites>
-		<testsuite name="unit">
-			<directory>tests</directory>
-		</testsuite>
-	</testsuites>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="phpunit.xsd"
+    colors="true"
+    verbose="true"
+>
 
-	<coverage processUncoveredFiles="true"
-			  ignoreDeprecatedCodeUnits="true">
-		<include>
-			<directory suffix=".php">src</directory>
-		</include>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
 
-		<exclude>
-			<file>src/helper.php</file>
-		</exclude>
-	</coverage>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
 
-	<php>
-		<const name="PHPUNIT_TESTSUITE" value="true" />
-	</php>
+            <exclude>
+                <file>src/helpers.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <php>
+        <const name="PHPUNIT_TESTSUITE" value="true" />
+    </php>
 </phpunit>
