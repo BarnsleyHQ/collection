@@ -261,6 +261,21 @@ class CollectionTest extends TestCase
         ], $this->collection->toArray());
     }
 
+    public function testReplaceNestedValueWithKey()
+    {
+        $this->collection = (new Collection([
+            ['name' => 'alex', 'age' => '30'],
+            ['name' => 'bob', 'age' => '30'],
+            ['name' => 'joe', 'age' => 'twenty-four'],
+        ]))->replace('twenty-four', 24, 'age');
+
+        $this->assertEquals([
+            ['name' => 'alex', 'age' => '30'],
+            ['name' => 'bob', 'age' => '30'],
+            ['name' => 'joe', 'age' => '24'],
+        ], $this->collection->toArray());
+    }
+
     public function testHasAssociative()
     {
         $collection = new Collection(['name' => 'alex', 'age' => '30']);
@@ -895,5 +910,88 @@ class CollectionTest extends TestCase
         foreach ($this->collection as $item) {
             $this->assertContains($item, $items);
         }
+    }
+
+    public function testSum()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals(15, $items->sum());
+    }
+
+    public function testRemoveByKey()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals([
+            0 => 1,
+            1 => 2,
+            2 => 3,
+            4 => 5
+        ], $items->remove(3)->toArray());
+    }
+
+    public function testTakeLastXValues()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals([4, 5], $items->take(2)->toArray());
+    }
+
+    public function testReverseCollection()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals([5, 4, 3, 2, 1], $items->reverse()->toArray());
+    }
+
+    public function testShouldChunkValues()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals([[1, 2], [3, 4], [5]], $items->chunk(2)->toArray());
+    }
+
+    public function testShouldAllowIsset()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertFalse(isset($items[9]));
+        $this->assertTrue(isset($items[2]));
+    }
+
+    public function testShouldAllowGetAsArray()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $this->assertEquals(2, $items[1]);
+    }
+
+    public function testShouldAllowSetAsArray()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        $items[1] = 10;
+        $this->assertEquals(10, $items[1]);
+
+        $items[] = 15;
+        $this->assertEquals(15, $items[5]);
+    }
+
+    public function testShouldAllowUnsetAsArray()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        unset($items[4]);
+        $this->assertEquals([1, 2, 3, 4], $items->toArray());
+    }
+
+    public function testShouldSetStateWhenUsingVarExport()
+    {
+        $items = new Collection([1, 2, 3, 4, 5]);
+
+        eval('$exported = '.var_export($items, true).';');
+
+        $this->assertEquals($items->toArray(), $exported->toArray());
     }
 }
