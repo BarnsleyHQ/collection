@@ -114,6 +114,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return array_key_exists($key, $this->entries);
     }
 
+    public function read($key)
+    {
+        $notation = new DotNotation($this->entries);
+        if ($notation->has($key)) {
+            return $notation->get($key);
+        }
+
+        return null;
+    }
+
     public function chunk(int $count): self
     {
         return new self(array_chunk($this->entries, $count));

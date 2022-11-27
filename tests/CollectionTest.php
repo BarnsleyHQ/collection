@@ -212,6 +212,17 @@ class CollectionTest extends TestCase
         $this->assertFalse($this->collection->has(200));
     }
 
+    public function testRead()
+    {
+        $this->collection = (new Collection([
+            'name' => 'alex',
+            'age'  => '30',
+        ]));
+
+        $this->assertEquals('alex', $this->collection->read('name'));
+        $this->assertNull($this->collection->read('address'));
+    }
+
     public function testReplaceSingleValueArrayWithRegex()
     {
         $this->collection->replace('/^t/', 'b');
