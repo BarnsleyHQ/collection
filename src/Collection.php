@@ -264,6 +264,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this;
     }
 
+    public function sortWithKeys(Callable $callback): self
+    {
+        uasort($this->entries, $callback);
+
+        return $this;
+    }
+
     public function sortBy(string $key, string $direction): self
     {
         if (in_array($direction, ['asc', 'desc'], true) === false) {

@@ -602,6 +602,27 @@ class CollectionTest extends TestCase
         ], $this->collection->toArray());
     }
 
+    public function testSortWithKeysShouldKeepAssociativeArrayKeys()
+    {
+        $this->collection = new Collection([
+            'a' => 'alex',
+            'b' => 'zoe',
+            'c' => 'bob',
+            'd' => 'billie',
+            'e' => 'fran',
+        ]);
+
+        $this->collection->sortWithKeys('strcmp');
+
+        $this->assertEquals([
+            'a' => 'alex',
+            'd' => 'billie',
+            'c' => 'bob',
+            'e' => 'fran',
+            'b' => 'zoe',
+        ], $this->collection->toArray());
+    }
+
     public function testSortBy()
     {
         $this->collection = new Collection([
