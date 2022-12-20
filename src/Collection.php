@@ -418,21 +418,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(array_unique($this->entries));
     }
 
-    public function toArray(): array
+    public function toArray(bool $includeNested = true): array
     {
-        $includeNested = true;
-        if (count(func_get_args()) >= 1 && gettype(func_get_arg(0)) === 'boolean') {
-            $includeNested = func_get_arg(0);
-        }
-
         if (! $includeNested) {
             return $this->entries;
         }
 
         $array = [];
-
         foreach ($this->entries as $key => $value) {
-            if (is_object($value) && get_class($value) === self::class) {
+            if (is_object($value) && get_class($value) === self::class || method_exists($value, 'toArray')) {
                 $value = $value->toArray();
             }
 

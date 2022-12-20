@@ -3,7 +3,8 @@
 use AlexBarnsley\Collection;
 use PHPUnit\Framework\TestCase;
 
-class SampleEntity {
+class SampleEntity
+{
     public $boolean = false;
     public $name = '';
 
@@ -37,6 +38,27 @@ class SampleEntity {
     public function getName(): string
     {
         return $this->name;
+    }
+}
+
+class SampleArrayObject
+{
+    public $name = '';
+
+    public $age = '';
+
+    public function __construct($name, $age)
+    {
+        $this->name = $name;
+        $this->age  = $age;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'age'  => $this->age,
+        ];
     }
 }
 
@@ -918,10 +940,12 @@ class CollectionTest extends TestCase
             ['name' => 'alex'],
             ['name' => 'bob'],
         ]);
+
         $userCollection = new Collection([
             ['name' => 'charlie'],
             ['name' => 'darwin'],
         ]);
+
         $this->collection = (new Collection())
             ->set('admin', $adminCollection)
             ->set('user', $userCollection);
@@ -938,10 +962,12 @@ class CollectionTest extends TestCase
             ['name' => 'alex'],
             ['name' => 'bob'],
         ]);
+
         $userCollection = new Collection([
             ['name' => 'charlie'],
             ['name' => 'darwin'],
         ]);
+
         $this->collection = (new Collection())
             ->set('admin', $adminCollection)
             ->set('user', $userCollection);
@@ -954,6 +980,34 @@ class CollectionTest extends TestCase
             'user' => [
                 ['name' => 'charlie'],
                 ['name' => 'darwin'],
+            ],
+        ], $this->collection->toArray());
+    }
+
+    public function testToArrayNestedForOtherObjects()
+    {
+        $adminCollection = new Collection([
+            new SampleArrayObject('alex', 28),
+            new SampleArrayObject('bob', 25),
+        ]);
+
+        $userCollection = new Collection([
+            new SampleArrayObject('charlie', 39),
+            new SampleArrayObject('darwin', 46),
+        ]);
+
+        $this->collection = (new Collection())
+            ->set('admin', $adminCollection)
+            ->set('user', $userCollection);
+
+        $this->assertEquals([
+            'admin' => [
+                ['name' => 'alex', 'age' => 28],
+                ['name' => 'bob', 'age' => 25],
+            ],
+            'user' => [
+                ['name' => 'charlie', 'age' => 39],
+                ['name' => 'darwin', 'age' => 46],
             ],
         ], $this->collection->toArray());
     }
