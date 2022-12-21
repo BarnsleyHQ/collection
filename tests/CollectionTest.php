@@ -1,6 +1,6 @@
 <?php
 
-use AlexBarnsley\Collection;
+use BarnsleyHQ\Collection;
 use PHPUnit\Framework\TestCase;
 
 class SampleEntity

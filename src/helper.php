@@ -1,6 +1,6 @@
 <?php
 
-use AlexBarnsley\Collection;
+use BarnsleyHQ\Collection;
 
 if (! function_exists('collect')) {
     function collect($value = [])

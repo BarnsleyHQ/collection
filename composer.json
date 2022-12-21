@@ -1,5 +1,5 @@
 {
-    "name": "alexbarnsley/collection",
+    "name": "barnsleyhq/collection",
     "description": "A basic collection management package",
     "type": "library",
     "require": {
@@ -11,7 +11,7 @@
             "src/helper.php"
         ],
         "psr-4": {
-            "AlexBarnsley\\": "src/"
+            "BarnsleyHQ\\": "src/"
         }
     },
     "license": "MIT",
