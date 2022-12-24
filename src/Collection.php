@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexBarnsley;
+namespace BarnsleyHQ;
 
 use ArrayAccess;
 use ArrayIterator;
