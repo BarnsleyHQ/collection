@@ -20,7 +20,7 @@ class SampleEntity
         return $this->boolean === true;
     }
 
-    public function testisTrue(): bool
+    public function testIsTrue(): bool
     {
         return false;
     }
@@ -533,11 +533,11 @@ class CollectionTest extends TestCase
 
         $this->assertEquals([$entityOne], $whereItems->toArray());
 
-        $whereItems = $this->collection->where('testisTrue', true);
+        $whereItems = $this->collection->where('testIsTrue', true);
 
         $this->assertEquals([], $whereItems->toArray());
 
-        $whereItems = $this->collection->where('testisTrue', false);
+        $whereItems = $this->collection->where('testIsTrue', false);
 
         $this->assertEquals([], $whereItems->toArray());
     }
