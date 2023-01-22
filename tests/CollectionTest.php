@@ -91,6 +91,20 @@ class CollectionTest extends TestCase
         $this->assertEquals(['test'], $collection->toArray());
     }
 
+    public function testHandlesNewInstanceWithMakeMethod()
+    {
+        $collection = Collection::make([1, 2, 3]);
+
+        $this->assertEquals([1, 2, 3], (new Collection($collection))->toArray());
+    }
+
+    public function testHandlesNewNonArrayInstanceWithMakeMethod()
+    {
+        $collection = Collection::make('test');
+
+        $this->assertEquals(['test'], $collection->toArray());
+    }
+
     public function testCount()
     {
         $this->assertEquals(5, $this->collection->count());

@@ -18,6 +18,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self($data['entries']);
     }
 
+    public static function make($data = []): self
+    {
+        return new self($data);
+    }
+
     public function __construct($data = [])
     {
         if ($data instanceof Collection) {
