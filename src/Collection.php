@@ -246,12 +246,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function whereCallable(Callable $callback): self
     {
         $results = new self();
-        foreach ($this->entries as $entry) {
+        foreach ($this->entries as $key => $entry) {
             if (! $callback($entry)) {
                 continue;
             }
 
-            $results->add($entry);
+            $results->set($key, $entry);
         }
 
         return $results;
