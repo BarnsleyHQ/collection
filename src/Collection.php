@@ -365,15 +365,48 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $results;
     }
 
-    public function pluck($key): Collection
+    public function dd()
+    {
+        dd($this);
+    }
+
+    public function pluck($key, $keyBy = null): Collection
     {
         $data = [];
-        foreach ($this->entries as $entry) {
-            if (! isset($entry[$key])) {
-                continue;
+        foreach ($this->entries as $originalKey => $entry) {
+            $value = null;
+            $haveGotValue = false;
+            if (preg_match('/^(is|has|get)/', $key) && method_exists($entry, $key)) {
+                $value = $entry->{$key}();
+
+                $haveGotValue = true;
             }
 
-            $data[] = $entry[$key];
+            if (! $haveGotValue) {
+                $notation = new DotNotation($entry);
+                if (! $notation->has($key)) {
+                    continue;
+                }
+
+                $value = $notation->get($key);
+            }
+
+            if ($keyBy) {
+                $haveGotValue = false;
+                if (preg_match('/^(is|has|get)/', $keyBy) && method_exists($entry, $keyBy)) {
+                    $entryKey = $entry->{$keyBy}();
+
+                    $haveGotValue = true;
+                }
+
+                if (! $haveGotValue) {
+                    $entryKey = $notation->get($keyBy, '');
+                }
+
+                $data[$entryKey ?? ''] = $value;
+            } else {
+                $data[$originalKey] = $value;
+            }
         }
 
         return new self($data);
