@@ -262,6 +262,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->whereCallable($callback);
     }
 
+    public function flip(): self
+    {
+        return new self(array_flip($this->entries));
+    }
+
     public function sort(Callable $callback): self
     {
         usort($this->entries, $callback);
